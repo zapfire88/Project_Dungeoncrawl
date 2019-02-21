@@ -2,13 +2,17 @@
 
 data Action = Inspect | Take | Use | Move | Hit | Speak | Open
 
+type Bag = [Item]
+
 type Map = [Room]
-type Room = [Number, PossibleDirections, Description, Item, PointOfInterest]
+type Room = [Number, PossibleDirections, Description, PointOfInterest]
 type Number = Int
 type Description = String
 type Item = String
-type PointOfInterest = String
-type PossibleDirections = [(Number, Number)]
+type PointOfInterest = [(Item, Bool)]
+type PossibleDirections = [Door]
+type Door = [Int, Bool, Bool] -- Int is the index (of doors in room). First Bool is for whether it is open, second if it is locked.
+
 
 -- Edge list av alla rum --
 [(1, 2),
