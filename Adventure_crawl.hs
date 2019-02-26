@@ -1,51 +1,39 @@
--- Bara några exempel --
+import Texts
+-- Rooms --
 
-data Action = Inspect | Take | Use | Move | Hit | Open
 
-type Bag = [Item]
-
-type Map = [Room]
-type Room = [RoomNumber, PossibleDirections, Description, PointOfInterest]
+type Room = (RoomNumber, PossibleDirections, Description, PointOfInterest)
 type RoomNumber = Int
-type Description = String
+type Description = (String, Bool)
 type Item = String
 type PointOfInterest = [(Item, Bool)]
-type PossibleDirections = [Door]
-type Door = [Int, Bool, Bool] -- Int is the index (of doors in room). First Bool is for whether it is open, second if it is locked.
-type Chest = [Bool, Bool]
+type PossibleDirections = [RoomNumber]
+type Door = [(Int, Bool)] -- Int is the index (of doors in room). First Bool is for whether it is open, second if it is locked.
+type Chest = [Bool]
+type AdjacentRooms = [(Int, Int)]
+
+
+adjacentRoom :: RoomNumber -> PossibleDirections
+adjacentRoom position = [a | (a,b) <- adjacentRoomsList, position == b] ++ [b | (a,b) <- adjacentRoomsList, position == a]
+
 
 
 
 -- Edge list av alla rum --
-[(1, 2),
-(2, 1),(2, 3),(2, 7),
-(3, 2),(3, 4),
-(4, 3),(4, 5),(4, 6),
-(5, 4),
-(6, 4),(6, 13),
-(7, 2),(7, 8),
-(8, 7),(8, 9),(8, 11),
-(9, 8),(9, 10),
-(10, 9),
-(11, 8),(11, 12),
-(12, 11),
-(13, 6),(13, 14),(13, 15),
-(14, 13),
-(15, 13),(15, 16),
-(16, 15),(16, 17),
-(17, 16),(17, 18),
-(18, 17)]
+adjacentRoomsList :: AdjacentRooms
+adjacentRoomsList = [(1, 2),(2, 3),(2, 7),(3, 4),(4, 5),(4, 6),(6, 13),(7, 8),(8, 9),(8, 11),(9, 10),(11, 12),(13, 14),(13, 15),(15, 16),(16, 17),(17, 18)]
 
-start (
+--start Room
+action <- getLine
+if action == 1 then putStrLn "Hey"
 
-runIntro = putStr ( unlines list)
-  where list = ["Finally, after many years of searching, you are now standing in front of it.", "To think that there was something, either some sort of a force field, or even stranger, a magic field that could hide it.","I will definitely discover something amazing here!"] 
+--runIntro = putStr ( unlines list) where list = ["Finally, after many years of searching, you are now standing in front of it.", "To think that there was something, either some sort of a force field, or even stranger, a magic field that could hide it.","I will definitely discover something amazing here!"] 
+
+runGame ::
 
 startGame :: IO ()
 startGame = do
   runIntro
-  runGame start
-
-
+  --runGame start
 
 
