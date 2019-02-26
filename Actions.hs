@@ -10,7 +10,7 @@ type Item = (String, String) -- Item is a Touple of two strings, first string fo
 -- type PointOfInterest = undefined  
 type PossibleDirections = [RoomNumber]
 type Door = [(Int, Bool)] -- Int is the index (of doors in room). First Bool is for whether it is open, second if it is locked.
-type Object = (Item, String) -- Second string in touple is for description
+type Object = (String, Item, String) -- First String for name, Second string is for description
 type AdjacentRooms = [(RoomNumber, RoomNumber)]
 type Inventory = [Item]
 
@@ -30,14 +30,14 @@ dEIL grunka (x:xs) = if grunka == x then True
                      else dEIL grunka xs
 
 useitem :: Item -> Object -> String
-useitem sak (a,b) = if sak == a then "Utför event"
+useitem sak (a,b,c) = if sak == b then "Utför event"
                     else "Does not work"
 
 inspectItem :: Item -> String
 inspectItem (a,b) = show b
 
 inspectObject :: Object -> String
-inspectObject (a,b) = show b
+inspectObject (a,b,c) = show c
 
 move :: RoomNumber -> RoomNumber -> String
 move dittrum villtill = if (dEIL (dittrum,villtill) adjacentRoomsList) == True then "runGame villtill"
