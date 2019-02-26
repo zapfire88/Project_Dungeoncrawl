@@ -5,12 +5,13 @@ import Texts
 type Room = (RoomNumber, PossibleDirections, Description, PointOfInterest)
 type RoomNumber = Int
 type Description = (String, Bool)
-type Item = String
-type PointOfInterest = [(Item, Bool)]
+type Item = (String, String) -- Item is a Touple of two strings, first string for the items name and second string for the items description. 
+type PointOfInterest = [(Item, Item)]
 type PossibleDirections = [RoomNumber]
 type Door = [(Int, Bool)] -- Int is the index (of doors in room). First Bool is for whether it is open, second if it is locked.
 type Chest = [Bool]
-type AdjacentRooms = [(Int, Int)]
+type AdjacentRooms = [(RoomNumber, RoomNumber)]
+
 
 
 adjacentRoom :: RoomNumber -> PossibleDirections
