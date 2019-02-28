@@ -1,4 +1,5 @@
 import GameContents
+import Functions
 import Data.List
 import Data.Char
 -- Rooms --
@@ -26,7 +27,7 @@ start = (loc, adjacentRoom loc, roomItem loc,roomObject loc, yourBag) where
   --yourBag :: Bag
   yourBag = []
 
-
+contents = [itemList, itemDescriptionList, objectList, objectDescriptionList]
 
 
 actions :: [String]
@@ -42,7 +43,7 @@ actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
 --dispEvent loc item objects
 --checkOpen loc dir = if takeThird 
 
-takeThird loc = [c | (a,b,c) <- adjacentRoomsList, loc == b] ++ [c | (a,b,c) <- adjacentRoomsList, loc == a]
+{-takeThird loc = [c | (a,b,c) <- adjacentRoomsList, loc == b] ++ [c | (a,b,c) <- adjacentRoomsList, loc == a]
   
 
 removeItem :: Item -> [Item] -> [Item]
@@ -71,11 +72,11 @@ adjacentRoom loc = [a | (a,b,c) <- adjacentRoomsList, loc == b] ++ [b | (a,b,c) 
 adjacentRoomsList :: AdjacentRooms
 adjacentRoomsList = [(1, 2, False),(2, 3, True)]--,(2, 7),(3, 4),(4, 5),(4, 6),(6, 13),(7, 8),(8, 9),(8, 11),(9, 10),(11, 12),(13, 14),(13, 15),(15, 16),(16, 17),(17, 18)]
   
-
+-}
 
 runGame :: Game -> IO () -- Game loop
 runGame (loc, dir, items, objects, bag) = do
-  -- Intro part --
+  ---- Intro part ----
   putStrLn (unlines ["--------------------------"])
   textList!!fromInteger loc
   putStrLn " "
@@ -88,7 +89,9 @@ runGame (loc, dir, items, objects, bag) = do
   putStrLn (unlines actions)
   action <- getLine
   
-  -- Action part --
+  ---- Actions ----
+  
+  -- Inspect --
   if action == "inspect" || action == "Inspect" then do 
   putStrLn "What would you like to inspect?"
   putStrLn ((unlines items) ++ (unlines objects))
@@ -103,6 +106,7 @@ runGame (loc, dir, items, objects, bag) = do
   putStrLn "Cannot inspect that!"
   runGame (loc, dir, items, objects, bag)
   
+  -- Take --
   
   else if action == "take" || action == "Take" then do 
   putStrLn "What would you like to take?"
@@ -110,21 +114,30 @@ runGame (loc, dir, items, objects, bag) = do
   if elem actionTake items == True
   then do 
   runGame (loc, dir, removeItem actionTake items, objects, actionTake:bag)
-  --itemRemove loc actiontake
   else do 
   putStrLn "Cannot take that!"
   runGame (loc, dir, items, objects, bag)
   
+  -- Use --
   
   else if action == "use" || action == "Use" then do 
-  putStrLn "What would you like to do?"
+  putStrLn "What would you like to use?"
   actionUse <- getLine
-  --if actionUse == 
+  --if elem actionUse bag == True then do
+  --putStrLn ("What would you like to use " ++ actionUse ++ " on?")
+  --useOn <- getLine
+  ----if elem useOn objects == True then do
+  
+  ----else putStrLn ("Cannot use " ++ actionUse ++ " on " ++ useOn ++ " ."
+  
+  --else if elem actionUse objects == True then do
+  --putStrLn ("What would you like to use " ++ actionUse ++ " on?")
+  --else do putStrLn ("Wrong input.")
   
  
   runGame (loc, dir, items, objects, bag)
 
-
+  -- Move --
 
   else if action == "move" || action == "Move" then do 
   putStrLn (unlines ["Where would you like to go?"])
@@ -140,6 +153,7 @@ runGame (loc, dir, items, objects, bag) = do
   putStrLn "wrong input"
   runGame (loc, dir, items, objects, bag)
   
+  -- Quit --
   
   else if action == "quit" || action == "Quit" then do 
   return ()
