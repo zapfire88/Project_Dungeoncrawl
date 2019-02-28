@@ -1,14 +1,18 @@
 
 -- Game contents --
-module GameContents(itemList, itemDescriptionList, textList)--,actionList)
+module GameContents(itemList, itemDescriptionList, textList, objectList, objectDescriptionList, adjacentRoomsList)
 where
 
----- Actions ----
 
-
-
---- Put actions here when done
-
+--type Game = (RoomNumber, PossibleDirections, PointOfInterests, Bag)
+--type RoomNumber = Integer
+--type PossibleDirections = [RoomNumber]
+--type PointOfInterests = [String]
+--type Bag = [String]
+--type Description = String
+--type Item = String
+--type AdjacentRooms = [(Integer, Integer)]
+--type Object = String
 
 
 
@@ -16,18 +20,22 @@ where
 
 
 --itemList :: [(RoomNumber,[Item])]
-itemList = [(1,[]), (2,[]),(3,["Key"]),(4,[]),(5,["Yellow gem"]),(6,[]),(7,[]),(8,[]),(9,[]),(10,["Shimmering coat","White gem"]),(11,[]),(12,[]),(13,[]),(14,[]),(15,[]),(16,[]),(17,[]),(18,[])]
+itemList = [(1,[]), (2,["Torch"]),(3,["Key"])]--,(4,[]),(5,["Yellow gem"]),(6,[]),(7,[]),(8,[]),(9,[]),(10,["Shimmering coat"]),(10,["White gem"]),(11,[]),(12,[]),(13,[]),(14,[]),(15,[]),(16,[]),(17,[]),(18,[])]
 
---itemDescription :: [(RoomNumber, [String])]
-itemDescriptionList = [(1,[]), (2,[]),(3,["It is a brass key."]),(4,[]),(5,["A small gem of yellow color in the shape of a hexagon. Possibly a topaz?"]),(6,[]),(7,[]),(8,[]),(9,[]),(10,["A coat that shimmers, casually","A beautiful white gem, must be worth a fortune"]),(11,[]),(12,[]),(13,[]),(14,[]),(15,[]),(16,[]),(17,[]),(18,[])]
+--itemDescriptionList :: [(RoomNumber, [String])]
+itemDescriptionList = [(1,[]), (2,["Torch", "It gives of a weird light"])]--,(3,["It is a brass key."]),(4,[]),(5,["A small gem of yellow color in the shape of a hexagon. Possibly a topaz?"]),(6,[]),(7,[]),(8,[]),(9,[]),(10,["A coat that shimmers, casually","A beautiful white gem, must be worth a fortune"]),(11,[]),(12,[]),(13,[]),(14,[]),(15,[]),(16,[]),(17,[]),(18,[])]
 
 --objectList :: [(RoomNumber, [Object])]
---objectList = [(1,[("Door", "Stone", "And old wooden door without a handle.") ("A big stone wall", "", "At inspection a loose stone falls of the wall and you pick it up")]), (2,[]), (3,[("Painting", "", "Gloomy painting of an eldery man")]), (4,[]), (5,[ ("Chest", "Key", "A wooden chest, and its locked") ]), (6,[]), (7,[("Bridge", "", "The bridge is put in a vertical position, but there seems to be a mechanism attached to it. Maybe there is a way to lower it for me to gain passage?"),("Piedestal", "Yellow Gem", "It has a small socket in it with six edges") ]), (8,[]), (9,[]), (10,[]), (11,[]), (12,[]), (13,[]), (14,[]), (15,[]), (16,[]), (17,[]), (18,[])]
+objectList = [(1,["Door"]), (1,["Stone wall"])]--, (2,[]), (3,[("Painting", "", "Gloomy painting of an eldery man")]), (4,[]), (5,[ ("Chest", "Key", "A wooden chest, and its locked") ]), (6,[]), (7,[("Bridge", "", "The bridge is put in a vertical position, but there seems to be a mechanism attached to it. Maybe there is a way to lower it for me to gain passage?"),("Piedestal", "Yellow Gem", "It has a small socket in it with six edges") ]), (8,[]), (9,[]), (10,[]), (11,[]), (12,[]), (13,[]), (14,[]), (15,[]), (16,[]), (17,[]), (18,[])]
 
+--objectDescriptionList :: [(RoomNumber, [Object])]
+objectDescriptionList = [(1,["Door", "An old wooden door without a handle."]), (1,["Stone wall", "There seem to be a 'loose' stone on the wall"])]--, (2,[]), (3,["Painting", "Gloomy painting of an eldery man"]), (4,[]), (5,["Chest", "A wooden chest, and its locked"), (6,[]), (7,[("Bridge", "", "The bridge is put in a vertical position, but there seems to be a mechanism attached to it. Maybe there is a way to lower it for me to gain passage?"),("Piedestal", "Yellow Gem", "It has a small socket in it with six edges") ]), (8,[]), (9,[]), (10,[]), (11,[]), (12,[]), (13,[]), (14,[]), (15,[]), (16,[]), (17,[]), (18,[])]
 
+--eventList :: [(RoomNumber, [Description], Bool)]
+eventList = [(1, ["Stone wall", "You push the stone and the door opens"], False), (3, ["Painting", "Gloomy painting of an eldery man"], False)]
 
-
-
+--adjacentRoomsList :: AdjacentRooms
+adjacentRoomsList = [(1, 2, False),(2, 3, True)]--,(2, 7),(3, 4),(4, 5),(4, 6),(6, 13),(7, 8),(8, 9),(8, 11),(9, 10),(11, 12),(13, 14),(13, 15),(15, 16),(16, 17),(17, 18)]
 
 
 
@@ -41,11 +49,11 @@ runIntro = putStr (unlines list)
  
 -- Room 1 --
 runRoom1 = putStr (unlines list)
-  where list = ["The entrance of the castle, finally. The castle is protected by a big stone wall surrounding it.", "I get a strange feeling standing in front of it. There might be traps in here, so I need to be careful.", "A large door with no handle? How should I get in?"]
+  where list = ["The castle is protected by a big stone wall surrounding it.", "I get a strange feeling standing in front of it. There might be traps in here, so I need to be careful.", "A large door with no handle? How should I get in?"]
 
 -- Room 2 --
 runRoom2 = putStr (unlines list)
-  where list = ["Wow. If anything, this has to be the biggest hallway I have ever seen.", "There are several lit up torches that seem to be stuck on the wall and there are ornaments everywhere.", "There is one torch next to me that is giving of a weird light.", "Although hot, it seems as if it is not fire. It does not seem to be stuck so I should probably take it with me.", "There are two closed doors. One straight ahead, and one to the right."]
+  where list = ["As soon as you have entered the door slams shut.","This has to be the biggest hallway I have ever seen.", "There are several lit up torches that seem to be stuck on the wall and there are ornaments everywhere.", "There is one torch next to me that is giving of a weird light.", "Although hot, it seems as if it is not fire. It does not seem to be stuck so I should probably take it with me.", "There are two closed doors. One straight ahead, and one to the right."]
 
 -- Room 3 --
 runRoom3 = putStr (unlines list)
