@@ -1,40 +1,32 @@
 import GameContents
-import Functions
 import Data.List
 import Data.Char
 -- Rooms --
 
 
-type Game = (RoomNumber, PossibleDirections, PointOfInterests, PointOfInterests, Bag, Contents)
+type Game = (RoomNumber, PossibleDirections, PointOfInterests, PointOfInterests, Bag, Contents, MoveStates)
 type RoomNumber = Integer
-type PossibleDirections = [(RoomNumber, Bool)]
+type PossibleDirections = [(RoomNumber, RoomNumber, Description, Bool)]
 type PointOfInterests = [String]
 type Bag = [String]
-type Contents = [(RoomNumber, [String])]
-type Description = [String]
+type Contents = [(RoomNumber, Integer, [String], Bool)]
+type Description = String
 type Item = String
 type AdjacentRooms = [(Integer, Integer, Bool)]
 type Object = String -- First String for name, Second string is for description
+type MoveStates = [(RoomNumber, RoomNumber, Description, Bool)]
 
 
+---- Change Contents to contentList ----
 
---itemList = [(1,["1"]), (1,["2"]), (2,["Torch"]),(3,["Key"]),(4,[]),(5,["Yellow gem"]),(6,[]),(7,[]),(8,[]),(9,[]),(10,["Shimmering coat"]),(10,["White gem"]),(11,[]),(12,[]),(13,[]),(14,[]),(15,[]),(16,[]),(17,[]),(18,[])]
-list = [b | (a,b) <- itemList]
-
-
-
-testfunc newLoc loc = if newLoc == (fst (head(adjacentRoom loc))) && (snd (head(adjacentRoom loc))) == False then do 
-[((fst (head(adjacentRoom loc))), True)]
---else if newLoc == (fst (head(adjacentRoom loc))) && (snd (head(adjacentRoom loc))) == False then do [((fst (head(adjacentRoom loc))), True)]
-else do error "wujat"
 
 
 start :: Game
-start = (loc, adjacentRoom loc, roomItem loc,roomObject loc, yourBag, gameContents) where
-  loc = 1
+start = (startLoc, getMoves startLoc startMoveStates, roomItem startLoc,roomObject startLoc, yourBag, startContents, startMoveStates) where
+  startLoc = 1
   yourBag = [""]
-  gameContents = concat [itemList ++ objectList]
-
+  startContents = contentList--itemList ++ objectList
+  startMoveStates = moveList
 
 actions :: [String]
 actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
@@ -46,11 +38,9 @@ actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
 
 ------ Game loop ------
 
-
-
 runGame :: Game -> IO () 
-runGame (loc, dir, items, objects, bag, gameContents) = do
-  ---- Intro part ----
+runGame (loc, dir, items, objects, bag, gameContents, moveStates) = do
+  print (loc, dir, items, objects, bag, gameContents, moveStates)
   putStrLn (unlines ["--------------------------"])
   textList!!fromInteger loc
   putStrLn " "
@@ -71,58 +61,58 @@ runGame (loc, dir, items, objects, bag, gameContents) = do
   ---- Actions ----
   
   
+  -- Quit --
+  
+  if action == "Quit" then do 
+  return()
+  
   
   -- Inspect --
-  
-  
-  
-  if action == "inspect" || action == "Inspect" then do 
+    
+  else if action == "Inspect" then do 
   putStrLn "What would you like to inspect?"
   putStrLn ((unlines items) ++ (unlines objects))
   actionInspect <- getLine
   if elem actionInspect items == True then do
   putStrLn (unlines (itemDesc loc actionInspect))
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
   else if elem actionInspect objects == True then do
   putStrLn (unlines (objectDesc loc actionInspect))
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
   else do
   putStrLn "Cannot inspect that!"
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
   
   
   
   -- Take --
-  
-  
-  
-  else if action == "take" || action == "Take" then do 
+    
+  else if action == "Take" then do 
   putStrLn "What would you like to take?"
   actionTake <- getLine
   
   if elem actionTake items == True
   then do 
-  runGame (loc, dir, removeItem actionTake items, objects, actionTake:bag, gameContents)
+  runGame (loc, dir, removeItem actionTake items, objects, actionTake:bag, removeContent [actionTake] gameContents, moveStates)
   
   else do 
   putStrLn "Cannot take that!"
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
   
   
   
   -- Use --
-  
-  
-  
-  else if action == "use" || action == "Use" then do 
+    
+  else if action == "Use" then do 
   if bag == [""] && objects == [""] then putStrLn "There is nothing to use."
-  else if bag == [""] && objects /= [""] then putStrLn ("In your bag is: " ++ (unlines ["Nothing in perticular"]) ++ "You see: " ++ (unlines objects))
+  else if bag == [""] && objects /= [""] then putStrLn (unlines (["In your bag is: "] ++ ["Nothing in perticular"] ++ ["You see: "] ++ objects))
   else if bag /= [""] && objects == [""] then putStrLn "You cannot use anyting at the moment."
   else do putStrLn "What would you like to use?"
   putStrLn ((unlines bag) ++ (unlines objects))
   actionUse <- getLine
   --if elem actionUse bag == True then do
   --putStrLn ("What would you like to use " ++ actionUse ++ " on?")
+  --putStrLn (unlines objects)
   --useOn <- getLine
   ----if elem useOn objects == True then do
   ----
@@ -131,53 +121,56 @@ runGame (loc, dir, items, objects, bag, gameContents) = do
   
   if elem actionUse objects == True then do
   putStrLn (unlines (eventDesc loc actionUse))
-  runGame (loc, changeBool loc, items, objects, bag, gameContents)
+  runGame (loc, getMoves loc (changeBool loc moveStates), items, objects, bag, gameContents, changeMoveState loc moveStates)
   
   else do putStrLn ("Wrong input.")
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
 
 
 
   -- Move --
+--getPossibleMoves loc = [b | (a,b,c) <- moveList, loc == a]
 
-
-
-  else if action == "move" || action == "Move" then do 
+  else if action == "Move" then do 
+  if dir == [] then do
+  putStrLn "You have nowhere to go right now."
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
+  else do
   putStrLn (unlines ["Where would you like to go?"])
   putStrLn (unlines (getMovesText loc))
   input <- getLine
-  
   let newLoc = ((read input :: RoomNumber),True)
+  
+  if input == "" then do 
+  putStrLn ("wrong input: '" ++ input ++ "' is not valid.")
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
+   
+  
   
   --if elem input (getMovesText loc) == True then do
   ----if snd dir == True then do
   ----runGame ((getMoves (head loc)), adjacentRoom (getMoves (head loc)), roomItem (getMoves (head loc)), roomObject (getMoves (head loc)), bag)
-  --if (fst newLoc) /= (fst (head dir)) then do
+  --if (fst newLoc) /= (fst d dir)) then do
   --putStrLn "wrong input"
   --runGame (loc, dir, items, objects, bag)
-  if elem newLoc dir == True then do-- && head (takeThird loc) == True then do
-  runGame ((fst newLoc), adjacentRoom (fst newLoc), roomItem (fst newLoc), roomObject (fst newLoc), bag, gameContents)
   
-  else do-- && head (takeThird loc) == False then do
+  
+  else if elem (flatten (checkRoom loc input moveStates)) dir then do
+  runGame (takeSecond (checkRoom loc input moveStates), getMoves (takeSecond (checkRoom loc input moveStates)) moveStates, roomItem (takeSecond (checkRoom loc input moveStates)), roomObject (takeSecond (checkRoom loc input moveStates)), bag, gameContents, moveStates)
+
+  
+  else do
   putStrLn "That is not possible right now."
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
   
-  --else do 
-  --putStrLn "wrong input"
-  --runGame (loc, dir, items, objects, bag)
+
   
+  -- Error message if wrong input --
   
-  
-  -- Quit --
-  
-  
-  
-  else if action == "quit" || action == "Quit" then do 
-  return ()
   else do
   
   putStrLn ("wrong input: '" ++ action ++ "' is not valid.")
-  runGame (loc, dir, items, objects, bag, gameContents)
+  runGame (loc, dir, items, objects, bag, gameContents, moveStates)
 
 
 
