@@ -71,9 +71,12 @@ type IntroTexts = [(Bool, [Description])]
 
     
 
-
-
-
+{- start
+Sets the gamestate to its initial values, in other words, starts the game from the beginning. 
+PRE: true
+RETURNS: Returns the datatype Game with a pretedermined set of values.
+EXAMPLES: start = (startLoc, getMoves startLoc startMoveStates, roomItem startLoc,roomObject startLoc, startBag, startContents, startMoveStates, startTexts)
+-}
 
 start :: Game
 start = (startLoc, getMoves startLoc startMoveStates, roomItem startLoc,roomObject startLoc, startBag, startContents, startMoveStates, startTexts) 
@@ -82,6 +85,13 @@ startBag= [""]
 startContents = contentList
 startMoveStates = moveList
 startTexts = textList
+
+{- actions 
+Lists up the different actions that the player will be able to make. 
+PRE: True
+RETURNS: Returns a list of five strings. 
+EXAMPLES: actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
+-}
 
 actions :: [String]
 actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
@@ -93,6 +103,10 @@ actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
 
 ------ Game loop ------
 
+{- runGame 
+Updates the gamestate with new values.
+PRE: true
+-}
 
 runGame :: Game -> IO () 
 runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = do
@@ -246,6 +260,16 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
 
 ---- Starts the game ----
 
+{- startGame
+PRE: true
+RETURNS: Returns a string line, the function "start" and the function runGame. 
+EXAMPLES: startGame = do
+  putStrLn (unlines ["----------------------------------------------------"])
+  putStrLn (unlines (snd (textList!!0)))
+  runGame start 
+  return ()
+-}
+
 startGame :: IO ()
 startGame = do
   putStrLn (unlines ["----------------------------------------------------"])
@@ -256,6 +280,13 @@ startGame = do
 
 
 ---- Sphinx scene ----
+
+{- runSphinx 
+runSphinx starts an event in the game involving a mythical creature known as the Sphinx. 
+PRE: true
+RETURNS: Returns a string line and Game with new values, both depending on the choices the player makes. 
+EXAMPLES: runSphinx = "I will give you two guesses. If you cannot guess correctly, I will have you for dinner."
+-}
 
 runSphinx :: Game -> IO ()
 runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = do
@@ -281,6 +312,13 @@ runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) 
 
 ---- Completes the game ----
 
+{- runFinish
+runFinish starts the final event of the game and lets the player choose if they want to play again or not. 
+PRE: true 
+RETURNS: Returns either "runGame start", "exitSuccess" or putStrLn ("Not a valid input. Answer with Y or N."). 
+EXAMPLES: runFinish = "You step through the mirror and end up infront of the castle.", "You turn around but can't see the passage you came from.", "Right before your eyes the castle starts to vanish."
+-}
+
 runFinish :: IO ()
 runFinish = do
   putStrLn (unlines(["You step through the mirror and end up infront of the castle.", "You turn around but can't see the passage you came from.", "Right before your eyes the castle starts to vanish."]))
@@ -296,6 +334,13 @@ runFinish = do
 
 
 ---- Death scenes ----
+
+{- runRedDeath
+runRedDeath runs the gamestate through one of the death endings and lets the player choose if they want to play again or not. 
+PRE: true
+RETURNS: Returns a text and a new game state. 
+EXAMPLES: runRedDeath = "Not a valid input. Answer with Y or N."
+-}
 
 runRedDeath :: IO ()
 runRedDeath = do
