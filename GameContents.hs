@@ -50,7 +50,8 @@ newTextList loc list = (take loc list) ++ changeTextBool [(list!!(loc))] ++ (dro
   changeTextBool list = [(True,b) | (a,b) <- list, a == False] ++ [(True,b) | (a,b) <- list, a == True]
 
 checkEvent loc action actionOn = if elem action (getEvent loc action) == True && elem actionOn (getEvent loc action) == True then True else False where
-  getEvent loc action = flatten [c | (a,b,c) <- eventDescriptionList, loc == a && action == (head c)]
+  getEvent loc action = if [c | (a,b,c) <- eventDescriptionList, loc == a && action == (head c)] == [] then [""]
+  else flatten [c | (a,b,c) <- eventDescriptionList, loc == a && action == (head c)]
   
   
 ---- Item- and Object-lists ----
