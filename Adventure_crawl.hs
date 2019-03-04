@@ -7,16 +7,65 @@ import System.Random
 
 -- Rooms --
 
+{- The Game datatype represents your game state, in other words: It represent where you are in the game.
+Your gamestate is determined by which room you are in, the current availible PossibleDirections , what different Objects and Items that exists in your current room, what items you currently have on you and Introtexts. 
+INVARIANT: All RoomNumber, PossibleDirections, Items, Objects, Bag, Contents, MoveStates and IntroTexts that currently exists in the game-}
 
 type Game = (RoomNumber, PossibleDirections, Items, Objects, Bag, Contents, MoveStates, IntroTexts)
+
+{- The datatype Roomnumber represents the numbering of the rooms. 
+It represents each rooms number with an integer. 
+Invariant: Integers 1-18 -}
+
 type RoomNumber = Integer
+
+
+{-The datatype PossibleDirections represents every direction you could possibly move in from the room you are currently located in. 
+PossibleDirections is represented by a list of quadruples containing 2 different RoomNumbers, a Description type and a Bool value
+Invariant: RoomNumber, RoomNumber, Description, Bool -}
+
 type PossibleDirections = [(RoomNumber, RoomNumber, Description, Bool)]
+
+{- The datatype Description represents a description for a specific PointOfInterests or a room. 
+Description is represented by a string. 
+INVARIANT: A list of all PointOfInterests and rooms that exists in the game. 
+-}
+
 type Description = String
+
+{- The datatype Items represents items in the game. 
+Items is represented by a list of strings that corresponds to the items names. 
+INVARIANT: A list of all the items that exists in the game. -}
+
 type Items = [String]
+
+{- The datatype Objects represents objects in the game
+Objects is represented by a list of strings that corresponds to the objects names. 
+INVARIANT: A list of the possible objects in the game. -}
+
 type Objects = [String]
+
+{- The datatype Bag represents the items that you are currently holding.
+Bag is represented by a list of strings that corresponds to the names of items.
+INVARIANT: A list of the names of all the items that exists in the game. 
+-}
 type Bag = [String]
+
+{-The datatype Contents represents relevant details of all the rooms
+Contents is represented with a list of quadruples containing -}
+
 type Contents = [(RoomNumber, Integer, String, Bool)]
+
+{- The datatype MoveStates represents which rooms that are possible to move to from the room your are currently in. 
+MoveStates is represented by a list of quadruples that contains your current roomnumber, a roomnumber of a room adjacent to your current room, a description of the adjacant room and a boolean value that determines if you have been in the adjacent room before or not. 
+INVARIANT: All roomnumbers that exists in the game and their corresponding Description. -}
+
 type MoveStates = [(RoomNumber, RoomNumber, Description, Bool)]
+
+{- The datatype IntroTexts represents which rooms you have entered before and the descriptions of the rooms. 
+IntroTexts is represented by a a list of touples containing a boolean value which states whether you have been in the room before or not and a Description corresponding to that specific room. 
+INVARIANT: A list of all descriptions that currently exists in the game. -}
+
 type IntroTexts = [(Bool, [Description])]
 
 
