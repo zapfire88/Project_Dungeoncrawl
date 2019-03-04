@@ -107,6 +107,10 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
       putStrLn (unlines (itemDesc loc actionInspect))
       runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     else if elem actionInspect objects == True then do
+    if actionInspect == "Self" then do
+      putStrLn (unlines(selfText))
+      runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
+    else do
       putStrLn (unlines (objectDesc loc actionInspect))
       runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     else do
