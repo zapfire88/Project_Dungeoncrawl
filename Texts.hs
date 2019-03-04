@@ -1,9 +1,13 @@
 
-module Texts(textList, sphinxList)
+module Texts(selfText, textList, sphinxList)
 where
 
 
+-- Self introduction --
+selfText = ["My name is Violet Brown.","I search for mysterious creatures and investigate fairytales as a hobby.","I am so glad that I finally found a fairytale that is true!"]
 
+
+-- Room texts --
 
 textList = [runIntro, runRoom1, runRoom2, runRoom3, runRoom4, runRoom5, runRoom6, runRoom7, runRoom8, runRoom9, runRoom10, runRoom11, runRoom12, runRoom13]
 
