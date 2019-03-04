@@ -1,7 +1,9 @@
 
-module Texts(textList)
+module Texts(textList, sphinxList)
 where
--- Introduction --
+
+
+
 
 textList = [runIntro, runRoom1, runRoom2, runRoom3, runRoom4, runRoom5, runRoom6, runRoom7, runRoom8, runRoom9, runRoom10, runRoom11, runRoom12, runRoom13, runRoom14, runRoom15, runRoom16, runRoom17, runRoom18]
 
@@ -13,43 +15,31 @@ runIntro = (False, ["The stories tell about a secret castle, hidden to the naked
 runRoom1 = (False, ["The castle is protected by a big stone wall surrounding it.", "You get a strange feeling standing in front of it. There might be traps in here, so you need to be careful.", "There is a large door in front of you, but it has no handle."])
 
 -- Room 2 --
-runRoom2 = (False, ["As soon as you have entered the door slams shut.","This has to be the biggest hallway you have ever seen.", "There are several torches stuck to the wall lighting up the room, and there are ornaments everywhere.", "There is one torch next to you that is giving of a weird light.", "Although hot, it seems as if it is not fire. It does not seem to be stuck so you should probably take it with you.", "There are two closed doors. One straight ahead, and one to the right."])
+runRoom2 = (False, ["As soon as you have entered the door slams shut. You need to find another way out","This has to be the biggest hallway you have ever seen.", "There are several torches stuck to the wall lighting up the room.", "There is one torch next to you that is giving of a weird light.", "Although hot, it seems like it is not fire. It does not seem to be stuck so you should probably take it with you.", "There are two doors. One straight ahead, and one to the right."])
 
 -- Room 3 --
-runRoom3 = (False, ["A short corridor. There is a painting on the left side and a big banner to the right.", "At the end of the corridor is a closed door."])
+runRoom3 = (False, ["A short corridor. There is a painting on the left side and a big banner to the right.", "At the end of the corridor is a door."])
 
 -- Room 4 --
-runRoom4 = (False, ["Another big room, looks like a lounge.", "There are some chairs around a table and a big unlit fireplace.", "There is a a closed door on the other side of the room."])
-
--- if player use torch on fireplace, a secret door opens --
-runHappeningRoom4 = (False, ["A secret door? Maybe there are more of these!"])
+runRoom4 = (False, ["Another big room, looks like a lounge.", "There are some chairs around a table and a big unlit fireplace.", "There is a a door on the other side of the room."])
 
 -- Room 5 --
-runRoom5 = (False, ["There is a chest in here. Maybe it contains something useful?"])
+runRoom5 = (False, ["There is not much here in this small room except a glowing yellow gem that lights up the room."])
 
 -- Room 6 --
-runRoom6 = (False, ["This room's ceiling is very high up. Nothing special in here except the big opening that's very high up.", "I could climb up there if I had some help."])
+runRoom6 = (False, ["There is nothing special in here except the big balcony that's very high up.", "You recognize it from movies, when kings or leaders look down upon their armies and such.", "You could probably climb up there if you had some help."])
 
 -- Room 7 --
-runRoom7 = (False, ["A big cave in a castle? This is getting stranger by the second.", "Next to me is a piedestal with a small socket. The bridge is opened, so I can't cross.", "Maybe I can lower it by inserting something into the socket?"])
-
--- if player inserts yellow gem into socket --
-runHappeningRoom7 = (False, ["The bridge is lowered! Maybe the gem holds some sort energy?"])
+runRoom7 = (False, ["\"A big cave in a castle? This is getting stranger by the second.\" you think to yourself.", "Next to you is a pedestal with a small socket. The bridge is opened, so you can't cross.", "The pedestal probably has something to do with the bridge."])
 
 -- Room 8 --
-runRoom8 = (False, ["Insert texts"])
+runRoom8 = (False, ["A large room with big targets on the other side. Seems like a practice room for shooting arrows. There is a door to your left and to the right."])
 
 -- Room 9 --
-runRoom9 = (False, ["Insert texts"])
+runRoom9 = (False, ["There are two pedestals in this room. One with something shimmering on it, the other with a white gem.", "You get a weird feeling from this"])
 
 -- Room 10 --
-runRoom10 = (False, ["Hmm. There are two pedestals in this room. One with something shimmering on it, the other with a white gem.", "I get a weird feeling from this, maybe there is a trap?"])
-
--- taking the shimmering coat --
-runOption1Room10 = (False, ["Phue! Nothing seems to have happened!", "Seems like a coat of some sort! I wonder what is making it shimmer and why?"])
-
--- taking the white gem --
-runOption2Room10 = (False, ["\"The door closed!? This is bad! REALLY BAD!\" you shout out.", " ", "A red, thin wall-like structure is coming towards you very slowly. You try touching it but it immediately burns away the tip of your finger.", "You realize immediately what's happening and that there is no escape.", " ", "You are Dead. Try again"])
+runRoom10 = (False, ["As you enter this room you immediately freeze. A creature you have only seen in books and movies is laying infront of you. The sphinx looks calmly at you."])
 
 -- Room 11 --
 runRoom11 = (False, ["A big room with a door on the other side. Something shimmering is blocking the way."])
@@ -74,3 +64,31 @@ runRoom17 = (False, ["Insert texts"])
 
 -- Room 18 --
 runRoom18 = (False, ["Insert texts"])
+
+
+
+-- Sphinx riddles --
+-- Riddles from riddles.fyi
+sphinxList = [riddle1, riddle2, riddle3, riddle4, riddle5, riddle6, riddle7, riddle8, riddle9, riddle10]
+
+
+riddle1 = ["Iron", "What goes in the water red and comes out black?"]
+
+riddle2 = ["Friend", "What is hard to find but easy to lose, worth more than gold but costs less than a penny?"]
+
+riddle3 = ["Riddle", "When you do not know what I am, then I am something. When you know what I am, then I am nothing. What am I?"]
+
+riddle4 = ["River", "It can run but cannot walk. It has a mouth but cannot talk. It has a head but never weep. It has a bed but never sleep. What is it?"]
+
+riddle5 = ["Winter", "After you go through a fall, I will take over. All life will stall, or at least grow slower. What am I?"]
+
+riddle6 = ["Snowflake", "What flies when it’s born, lies when it’s alive, and runs when it’s dead?"]
+
+riddle7 = ["R", "Two in corner, one in room, zero in house, but one in shelter. What am I?"]
+
+riddle8 = ["34", "A person has 367 apples. You take away 34. How many apples do you have?"]
+
+riddle9 = ["Road", "What goes through towns and over hills but never moves?"]
+
+riddle10 = ["Joke", "I can be cracked, I can be made. I can be told, I can be played. What am I?"]
+
