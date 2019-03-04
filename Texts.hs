@@ -27,7 +27,7 @@ runRoom4 = (False, ["Another big room, looks like a lounge.", "There are some ch
 runRoom5 = (False, ["There is not much here in this small room except a glowing yellow gem that lights up the room."])
 
 -- Room 6 --
-runRoom6 = (False, ["There is nothing special in here except the big balcony that's very high up.", "You recognize it from movies, when kings or leaders look down upon their armies and such.", "You could probably climb up there if you had some help."])
+runRoom6 = (False, ["You get a weird feeling in here. Almost like there is a force pushing on you", "You can see a big balcony that is very high up.", "You recognize it from movies, when kings or leaders look down upon their armies and such.", "You could probably climb up there if you had some help."])
 
 -- Room 7 --
 runRoom7 = (False, ["\"A big cave in a castle? This is getting stranger by the second.\" you think to yourself.", "Next to you is a pedestal with a small socket. The bridge is opened, so you can't cross.", "The pedestal probably has something to do with the bridge."])
@@ -48,7 +48,7 @@ runRoom11 = (False, ["A big room with a door on the other side. Something shimme
 runRoom12 = (False, ["A very small room. There is a pedestal with a scroll laying on top of it."])
 
 -- Room 13 --
-runRoom13 = (False, ["Insert texts"])
+runRoom13 = (False, ["A big bedroom. "])
 
 -- Room 14 --
 runRoom14 = (False, ["Insert texts"])
