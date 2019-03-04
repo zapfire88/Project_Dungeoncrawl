@@ -44,29 +44,9 @@ actions = ["- Inspect", "- Take", "- Use", "- Move", "- Quit"]
 
 ------ Game loop ------
 
-runSphinx :: Game -> IO ()
-runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = do
- putStrLn ("I will give you two guesses. If you cannot guess correctly, I will have you for dinner.")
- gen <- newStdGen
- let num = fst (randomR (0,9) gen)
- let riddle = sphinxList!!num
- putStrLn (unlines (tail riddle))
- answer <- getLine
- if elem answer [(head riddle)] == False then do
- putStrLn ("You have one more guess.")
- answer2 <- getLine
- if elem answer2 [(head riddle)] == True then do
- putStrLn ("Good guess. You may pass.")
- runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
- else do runSphinxDeath
- else do
- putStrLn ("Good guess. You may pass.")
- runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
-
 
 runGame :: Game -> IO () 
 runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = do
-  --print (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
   putStrLn (unlines ["----------------------------------------------------"])
   if fst (introTexts!! fromInteger loc) == False then do
   putStrLn (unlines (snd (introTexts!!fromInteger loc)))
@@ -140,8 +120,6 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
   else if action == "Use" then do 
     if bag == [""] && objects == [""] then do 
       putStrLn "There is nothing to use."
-    else if bag == [""] && objects /= [""] then do 
-      putStrLn (unlines (["","In your bag is: ", "Nothing in perticular","", "You see: "] ++ objects))
     else if bag /= [""] && objects == [""] then do 
       putStrLn "You cannot use anyting at the moment."
     else do 
@@ -151,9 +129,9 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     actionUse <- getLine
 
     if elem actionUse objects == True then do
-    if actionUse == "Sphinx" then do
+    if actionUse == "Sphinx" && loc == 10 then do
       runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
-    else if actionUse == "Sphinx" then do
+    else if actionUse == "Mirror" && loc == 13 then do
       runFinish
     else do
     let useOn = ""
@@ -162,22 +140,19 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     runGame (loc, getMoves loc (changeMoveState loc moveStates), items, objects, bag, gameContents, changeMoveState loc moveStates, introTexts)
     else do putStrLn ("Cannot use " ++ actionUse ++".")
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
-    --runGame (loc, getMoves loc (changeMoveState loc moveStates), items, objects, bag, gameContents, changeMoveState loc moveStates, introTexts)
+    
 
     else if elem actionUse bag == True then do
     putStrLn ("What would you like to use " ++ actionUse ++ " on?")
     putStrLn (unlines objects)
     useOn <- getLine
-    --if elem useOn objects == True then do
+    
     if checkEvent loc useOn actionUse == True then do
     putStrLn (unlines (eventDesc loc useOn actionUse))
     runGame (loc, getMoves loc (changeMoveState loc moveStates), items, objects, removeItem actionUse bag, gameContents, changeMoveState loc moveStates, introTexts)
-  
     else do putStrLn ("Cannot use " ++ actionUse ++ " on " ++ useOn ++ ".")
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     
-    --else do putStrLn ("Cannot use " ++ actionUse ++ " on " ++ useOn ++ ".")
-
     else do putStrLn ("Wrong input.")
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
 
@@ -189,15 +164,16 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     putStrLn "You have nowhere to go right now."
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     else do
-    putStrLn (unlines ["Where would you like to go? (Hit Enter if nowhere)"])
+    putStrLn (unlines ["Where would you like to go?"])
     putStrLn (unlines (getMovesText loc moveStates))
     input <- getLine
   
-    if input == "" then do 
+    --if input == "" then do 
+    if elem (checkMove loc input moveStates) dir == False then do
     putStrLn ("wrong input: '" ++ input ++ "' is not valid.")
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     
-    else if elem (checkMove loc input moveStates) dir then do
+    else if elem (checkMove loc input moveStates) dir == True then do
     runGame ((getNewRoom loc input moveStates), getMoves (getNewRoom loc input moveStates) moveStates, roomItem (getNewRoom loc input moveStates), roomObject (getNewRoom loc input moveStates), bag, gameContents, moveStates, introTexts)
   
     else do
@@ -221,11 +197,34 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
 startGame :: IO ()
 startGame = do
   putStrLn (unlines ["----------------------------------------------------"])
-  putStrLn " "
   putStrLn (unlines (snd (textList!!0)))
-  putStrLn " "
   runGame start -- Calls the game with starting values
   return ()
+
+
+
+---- Sphinx scene ----
+
+runSphinx :: Game -> IO ()
+runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = do
+ putStrLn ("I will give you two guesses. If you cannot guess correctly, I will have you for dinner.")
+ gen <- newStdGen
+ let num = fst (randomR (0,9) gen)
+ let riddle = sphinxList!!num
+ putStrLn (unlines (tail riddle))
+ answer <- getLine
+ if elem answer [(head riddle)] == False then do
+ putStrLn ("You have one more guess.")
+ answer2 <- getLine
+ if elem answer2 [(head riddle)] == True then do
+ putStrLn ("Good guess. You may pass.")
+ runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
+ else do runSphinxDeath
+ else do
+ putStrLn ("Good guess. You may pass.")
+ runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
+
+
 
 
 ---- Completes the game ----
@@ -241,20 +240,21 @@ runFinish = do
   exitSuccess
   else do putStrLn ("Not a valid input. Answer with Y or N.")
 
+
+
+
 ---- Death scenes ----
 
 runRedDeath :: IO ()
 runRedDeath = do
-  putStrLn (unlines(["\"The door closed!? This is bad! REALLY BAD!\" you shout out.", " ", "A red, thin wall-like structure is coming towards you very slowly. You try touching it but it immediately burns away the tip of your finger.", "You realize immediately what's happening and that there is no escape.", " ", "You are Dead. Want to try again? (Y,N)"]))
+  putStrLn (unlines(["\"The door closed!? This is bad! REALLY BAD!\" you shout out.", " ", "A red, thin, wall-like structure is coming towards you very slowly. You try touching it but it immediately burns away the tip of your finger.", "You realize immediately what's happening and that there is no escape.", " ", "You are Dead. Want to try again? (Y,N)"]))
   action <- getLine
   if action == "Y" then do
   runGame start
   else if action == "N" then do
   exitSuccess
   else do putStrLn ("Not a valid input. Answer with Y or N.")
-  
-  
-  
+   
 runSphinxDeath :: IO ()
 runSphinxDeath = do
   putStrLn (unlines(["The Sphinx throws itself onto you. As you feel it's jaw crushing your neck, everything gets dark.", "You are Dead. Want to try again? (Y,N)"]))
