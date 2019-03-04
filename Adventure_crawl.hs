@@ -129,8 +129,11 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     actionUse <- getLine
 
     if elem actionUse objects == True then do
-    if actionUse == "Sphinx" && loc == 10 then do
+    if actionUse == "Self" then do
+    putStrLn "You cannot use yourself."
+    else if actionUse == "Sphinx" && loc == 10 then do
       runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
+
     else if actionUse == "Mirror" && loc == 13 then do
       runFinish
     else do
