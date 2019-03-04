@@ -149,6 +149,8 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     if elem actionUse objects == True then do
     if actionUse == "Sphinx" then do
       runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
+    else if actionUse == "Sphinx" then do
+      runFinish
     else do
     let useOn = ""
     if checkEvent loc actionUse useOn == True then do
@@ -222,19 +224,40 @@ startGame = do
   return ()
 
 
+---- Completes the game ----
+
+runFinish :: IO ()
+runFinish = do
+  putStrLn (unlines(["You step through the mirror and end up infront of the castle.", "You turn around but can't see the passage you came from.", "Right before your eyes the castle starts to vanish."]))
+  putStrLn (unlines(["Congratulations! You have completed the game.", "Want to play again? (Y,N)"]))
+  action <- getLine
+  if action == "Y" then do
+  runGame start
+  else if action == "N" then do
+  exitSuccess
+  else do putStrLn ("Not a valid input. Answer with Y or N.")
+
 ---- Death scenes ----
 
 runRedDeath :: IO ()
 runRedDeath = do
-  putStrLn (unlines(["\"The door closed!? This is bad! REALLY BAD!\" you shout out.", " ", "A red, thin wall-like structure is coming towards you very slowly. You try touching it but it immediately burns away the tip of your finger.", "You realize immediately what's happening and that there is no escape.", " ", "You are Dead. Try again"]))
-  pause <- getLine
+  putStrLn (unlines(["\"The door closed!? This is bad! REALLY BAD!\" you shout out.", " ", "A red, thin wall-like structure is coming towards you very slowly. You try touching it but it immediately burns away the tip of your finger.", "You realize immediately what's happening and that there is no escape.", " ", "You are Dead. Want to try again? (Y,N)"]))
+  action <- getLine
+  if action == "Y" then do
   runGame start
+  else if action == "N" then do
+  exitSuccess
+  else do putStrLn ("Not a valid input. Answer with Y or N.")
   
   
   
 runSphinxDeath :: IO ()
 runSphinxDeath = do
-  putStrLn (unlines(["The Sphinx throws itself onto you. As you feel it's jaw crushing your neck, everything gets dark.", "You are Dead. Try again"]))
-  pause <- getLine
+  putStrLn (unlines(["The Sphinx throws itself onto you. As you feel it's jaw crushing your neck, everything gets dark.", "You are Dead. Want to try again? (Y,N)"]))
+  action <- getLine
+  if action == "Y" then do
   runGame start
+  else if action == "N" then do
+  exitSuccess
+  else do putStrLn ("Not a valid input. Answer with Y or N.")
   
