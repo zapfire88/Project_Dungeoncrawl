@@ -130,7 +130,7 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
 
     if elem actionUse objects == True then do
     if actionUse == "Self" then do
-    putStrLn "You cannot use yourself."
+    putStrLn "You cannot use yourself. But maybe you can use an item on you?"
     else if actionUse == "Sphinx" && loc == 10 then do
       runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
 
