@@ -7,8 +7,6 @@ where
 --import Texts
 
 ---- Functions ----
---getNewRoom loc input moveStates = takeSecond (checkRoom loc input moveStates)
-
 
 changeMoveState loc moveState = flatten(changeBool loc moveState):filteredList where
   filteredList = filterList (reverseChangeBool(flatten(changeBool loc moveState))) moveState
