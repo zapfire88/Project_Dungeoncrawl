@@ -5,7 +5,7 @@ where
 
 
 
-textList = [runIntro, runRoom1, runRoom2, runRoom3, runRoom4, runRoom5, runRoom6, runRoom7, runRoom8, runRoom9, runRoom10, runRoom11, runRoom12, runRoom13, runRoom14, runRoom15, runRoom16, runRoom17, runRoom18]
+textList = [runIntro, runRoom1, runRoom2, runRoom3, runRoom4, runRoom5, runRoom6, runRoom7, runRoom8, runRoom9, runRoom10, runRoom11, runRoom12, runRoom13]
 
 
 -- Introduction --
@@ -48,23 +48,7 @@ runRoom11 = (False, ["A big room with a door on the other side. Something shimme
 runRoom12 = (False, ["A very small room. There is a pedestal with a scroll laying on top of it."])
 
 -- Room 13 --
-runRoom13 = (False, ["A big bedroom. "])
-
--- Room 14 --
-runRoom14 = (False, ["Insert texts"])
-
--- Room 15 --
-runRoom15 = (False, ["Insert texts"])
-
--- Room 16 --
-runRoom16 = (False, ["Insert texts"])
-
--- Room 17 --
-runRoom17 = (False, ["Insert texts"])
-
--- Room 18 --
-runRoom18 = (False, ["Insert texts"])
-
+runRoom13 = (False, ["A big bedroom. There is a big mirror and a big bed in here." ,"The mirror looks kinda weird, and there seems to be something laying in the bed."])
 
 
 -- Sphinx riddles --
