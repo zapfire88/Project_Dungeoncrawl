@@ -20,13 +20,13 @@ flatten [a] = a
 
 removeItem input items = filter (/=input) items
 
-removeContent input content = filter (\(_,b,c,_) -> b == 2 && c == input) content
+removeContent input content = filter (\(_,b,c,_) -> b /= 1 && c /= input) content
 
 
 
-roomItem loc = [c | (a, b, c, d) <- contentList, loc == a && b == 1 && d == True]
+roomItem loc list = [c | (a, b, c, d) <- list, loc == a && b == 1 && d == True]
 
-roomObject loc = "Self":[c | (a, b, c, d) <- contentList, loc == a && b == 2 && d == True]
+roomObject loc list = "Self":[c | (a, b, c, d) <- list, loc == a && b == 2 && d == True]
 
 itemDesc loc item = [last c | (a,b,c) <- descriptionList, loc == a && b == 1 && item == (head c)]
 
