@@ -79,7 +79,7 @@ EXAMPLES: start = (startLoc, getMoves startLoc startMoveStates, roomItem startLo
 -}
 
 start :: Game
-start = (startLoc, getMoves startLoc startMoveStates, roomItem startLoc,roomObject startLoc, startBag, startContents, startMoveStates, startTexts) 
+start = (startLoc, getMoves startLoc startMoveStates, roomItem startLoc startContents, roomObject startLoc startContents, startBag, startContents, startMoveStates, startTexts) 
 startLoc = 1
 startBag= [""]
 startContents = contentList
@@ -240,7 +240,7 @@ runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) = 
     runGame (loc, dir, items, objects, bag, gameContents, moveStates, introTexts)
     
     else if elem (checkMove loc input moveStates) dir == True then do
-    runGame ((getNewRoom loc input moveStates), getMoves (getNewRoom loc input moveStates) moveStates, roomItem (getNewRoom loc input moveStates), roomObject (getNewRoom loc input moveStates), bag, gameContents, moveStates, introTexts)
+    runGame ((getNewRoom loc input moveStates), getMoves (getNewRoom loc input moveStates) moveStates, roomItem (getNewRoom loc input moveStates) gameContents, roomObject (getNewRoom loc input moveStates) gameContents, bag, gameContents, moveStates, introTexts)
   
     else do
     putStrLn "That is not possible right now."
@@ -301,11 +301,11 @@ runSphinx (loc, dir, items, objects, bag, gameContents, moveStates, introTexts) 
  answer2 <- getLine
  if elem answer2 [(head riddle)] == True then do
  putStrLn ("Good guess. You may pass.")
- runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
+ runGame (12, getMoves 12 moveStates, roomItem 12 gameContents, roomObject 12 gameContents, bag, gameContents, moveStates, introTexts)
  else do runSphinxDeath
  else do
  putStrLn ("Good guess. You may pass.")
- runGame (12, getMoves 12 moveStates, roomItem 12, roomObject 12, bag, gameContents, moveStates, introTexts)
+ runGame (12, getMoves 12 moveStates, roomItem 12 gameContents, roomObject 12 gameContents, bag, gameContents, moveStates, introTexts)
 
 
 
