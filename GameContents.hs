@@ -20,7 +20,7 @@ flatten [a] = a
 
 removeItem input items = filter (/=input) items
 
-removeContent input content = filter (\(_,b,c,_) -> b /= 1 && c /= input) content
+removeContent input content = filter (\(_,_,c,_) -> c /= input) content
 
 
 
